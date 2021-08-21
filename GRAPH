@@ -1,0 +1,49 @@
+bipartite code (bfs)
+
+/* graph coloring problem */
+
+Problem : 
+[leetcode](https://leetcode.com/problems/is-graph-bipartite/)
+
+class Solution {
+public:
+    bool isBipartite(vector<vector<int>>& graph) {
+        
+        vector<int> adj[graph.size()+1];
+        
+        for (int i = 0 ; i<graph.size() ; i++){
+            for (auto x : graph[i]){
+                adj[i].push_back(x);
+            }
+        }
+        
+        map<int , int>m;   // used for storing colors of node //
+        
+        vector<int>vis(graph.size()+1 , false);
+        
+        for (int i = 0 ;i<graph.size() ; i++){
+        
+        queue<int>q; q.push(i); 
+        int color = 0;
+        m[i] = 0;
+        while (!q.empty()){
+            int b = q.front(); q.pop();
+            int color = m[b];
+            vis[b] = true;
+            color = color^1;        // this is used for toggling between the colors //
+            for (auto x : adj[b]){
+                
+                if(!vis[x]){
+                    if (m.find(x) != m.end()){
+                       if (m[x] != color){return false;}   // if my current color not equal to previous color return false //
+                    }
+                   q.push(x);
+                    m[x] = color;
+                }
+            }    
+         }
+         
+       }
+        return true;
+    }
+};
